@@ -5,11 +5,47 @@
     pageEncoding="UTF-8"%>
     
     <% 
-    
     request.setCharacterEncoding("UTF-8");
     response.setCharacterEncoding("UTF-8");
     NoticeDAO dao = new NoticeDAO();
-    ArrayList<NoticeDTO> ar = dao.selectList();
+    int curPage =1;
+
+    try{
+    	curPage = Integer.parseInt(request.getParameter("curPage"));
+    }catch(Exception e) {
+    		
+    }
+    int perPage = 10;
+    int startRow = (curPage-1)*perPage + 1;
+    int lastRow = curPage*perPage;
+    
+    int totalCount = dao.getTotalCount();
+    
+    int totalPage = totalCount/perPage;
+    if(totalCount%perPage !=0){ 
+    	totalPage++;
+    }
+    int perBlock = 5;
+   	int totalBlock = totalPage/perBlock;
+    if(totalPage%perBlock !=0){
+    	totalBlock++;
+    }
+    int curBlock=curPage/perBlock;
+    if(curPage%perBlock !=0){
+    	curBlock++;
+    }
+    
+    int startNum = (curBlock-1)*perBlock +1;
+    int lastNum = curBlock*perBlock;
+    
+  	if(curBlock==totalBlock){
+  		lastNum=totalPage;
+  	}
+    
+
+    
+    ArrayList<NoticeDTO> ar = dao.selectList(startRow, lastRow);
+
     
     %>
     
@@ -55,6 +91,23 @@
 				<%}  %>
 			</table>
 		</div>		
+	  	
+	  	<div>
+	  		<%if(curBlock>1){ %>
+	  		<a href="./noticeList.jsp?curPage=<%=startNum-1 %>">[이전]</a>
+	  		
+	  		<%} %>
+
+	  		<%for(int i=startNum; i<=lastNum; i++) {%>
+	  		<a href="./noticeList.jsp?curPage=<%=i%>"><%=i %></a>
+	  	
+	  		<%} %>
+	  		
+	  		<%if(curBlock<totalBlock){ %>
+	  		<a href="./noticeList.jsp?curPage=<%=lastNum+1 %>">[다음]</a>
+	  		
+	  		<%} %>
+	  	</div>
 	  	
   	<div class="row">
   		<a href="./noticeWrite.jsp" class="btn btn-primary">Write</a>

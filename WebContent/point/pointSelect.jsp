@@ -8,9 +8,9 @@
     pageEncoding="UTF-8"%>
 <%
 	int num = Integer.parseInt(request.getParameter("num"));
-
-	PointDAO dao = new PointDAO();
-	PointDTO dto = dao.selectOne(num);
+	PointDAO pointDAO = new PointDAO();
+	PointDTO pointDTO = pointDAO.selectOne(num);
+	
 
 %>    
 <!DOCTYPE html>
@@ -21,19 +21,18 @@
 </head>
 <body>
 	
-	<%if(dto !=null){ %>
-		<h1>Name : <%= dto.getName() %></h1>
-		<h1>Avg  : <%= dto.getAvg() %> </h1>
+	<%if(pointDTO != null){ %>
+		<h1>Name : <%= pointDTO.getName() %></h1>
+		<h1>Avg  : <%= pointDTO.getAvg() %> </h1>
 	
 		<div>
-			<a href="./pointUpdate.jsp?num=<%= dto.getNum()%>">Update</a>
-			<a href="./pointDelete.jsp?num=<%= dto.getNum()%>">Delete</a>
+			<a href="./pointUpdate.jsp?num=<%= pointDTO.getNum()%>">Update</a>
+			<a href="./pointDelete.jsp?num=<%= pointDTO.getNum()%>">Delete</a>
+			
 		</div>
 	<%}else { %>
 		<h1>번호가 없다</h1>
-	<%}
-
-	%>
+	<%}%>
 </body>
 </html>
 

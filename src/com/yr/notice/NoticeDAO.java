@@ -10,11 +10,51 @@ import com.yr.util.DBConnector;
 
 public class NoticeDAO {
 	
-	
-	public ArrayList<NoticeDTO> selectList() throws Exception {
+	public int getTotalCount() throws Exception {
 		Connection con = DBConnector.getConnect();
-		String sql = "select num, title, writer, reg_date, hit from notice order by num desc";
+		String sql = "select count(num) from notice";
 		PreparedStatement st = con.prepareStatement(sql);
+		ResultSet rs = st.executeQuery();
+		
+		rs.next();
+		int result = rs.getInt(1);
+		
+		DBConnector.disConnect(con, st, rs);
+		return result;
+	}
+
+//	public static void main(String[] args) {
+//		
+//		NoticeDAO dao = new NoticeDAO();
+//		for(int i=0; i<84; i++) {
+//			NoticeDTO dto = new NoticeDTO();
+//			
+//			dto.setTitle("title"+i);
+//			dto.setContents("contents");
+//			dto.setWriter("writer");
+//			
+//			
+//			try {
+//				dao.insert(dto);
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		
+//		}
+//
+//	}
+	
+	public ArrayList<NoticeDTO> selectList(int startRow, int lastRow) throws Exception {
+		Connection con = DBConnector.getConnect();
+		String sql ="select * from " 
+				+"(select rownum r, p.* from "
+				+ "(select num, title, writer, reg_date, hit from notice order by num desc) p) "
+				+"where r between ? and ?";
+		PreparedStatement st = con.prepareStatement(sql);
+		st.setInt(1, startRow);
+		st.setInt(2, lastRow);
+		
 		ResultSet rs = st.executeQuery();
 		
 		ArrayList<NoticeDTO> ar = new ArrayList<NoticeDTO>();
@@ -73,7 +113,7 @@ public class NoticeDAO {
 	
 	public int update(NoticeDTO dto) throws Exception {
 		Connection con = DBConnector.getConnect();
-		String sql = "updqte notice set title=?, contents=? where num=?";
+		String sql = "update notice set title=?, contents=? where num=?";
 		PreparedStatement st = con.prepareStatement(sql);
 	
 		st.setString(1, dto.getTitle());
@@ -86,7 +126,7 @@ public class NoticeDAO {
 	}
 	
 	
-	
+
 	public int insert(NoticeDTO dto) throws Exception {
 		Connection con =DBConnector.getConnect();
 		String sql = "insert into notice values(notice_seq.nextval, ?,?,?,sysdate,0)";

@@ -37,7 +37,7 @@
 <body>
 	<div class="container">
 	<div class="row">
-	<form action="./pointUpdateProcess.jsp">
+	<form action="./pointUpdateProcess.jsp" >
 	<input type="hidden" name="num" value="<%= rs.getInt("num")%>">
     <div class="form-group">
       <label for="name">Name:</label>
@@ -54,6 +54,11 @@
     <div class="form-group">
       <label for="math">Math:</label>
       <input type="text" class="form-control" value="<%=rs.getInt("math") %>" id="math" placeholder="Enter Math" name="math">
+    </div>
+    
+    <div class="form-group">
+      <label for="math">Contents:</label>
+      <textarea rows="" cols="" name=""></textarea>
     </div>
     
     <button type="submit" class="btn btn-danger">Update</button>

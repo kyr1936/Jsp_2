@@ -10,7 +10,7 @@
 <%@ include file="../temp/header_nav.jsp" %>
 <div class="container">
 	<div class="row">
-	<form action="./pointWriteProcess.jsp">
+	<form action="./pointWriteProcess.jsp" method="post">
     <div class="form-group">
       <label for="name">Name:</label>
       <input type="text" class="form-control" id="name" placeholder="Enter Name" name="name">
