@@ -12,10 +12,12 @@ import com.yr.util.DBConnector;
 
 public class PointDAO {
 	//전체 개수 받아오기 getTotalCount()
-	public int getTotalCount() throws Exception {
+	public int getTotalCount(String kind, String search) throws Exception {
 		Connection con = DBConnector.getConnect();
-		String sql = "select count(num) from point";
+		String sql = "select count(num) from point where " +kind+ " like ?";
 		PreparedStatement st = con.prepareStatement(sql);
+		st.setString(1, "%"+search+"%");
+		
 		ResultSet rs = st.executeQuery();
 		
 		int result=0;
@@ -29,11 +31,11 @@ public class PointDAO {
 	
 	
 	//메서드명 selectList, 매개변수 없음, 리턴 arrayList
-	public ArrayList<PointDTO> selectList(String search, int startRow, int lastRow) throws Exception{
+	public ArrayList<PointDTO> selectList(String kind, String search, int startRow, int lastRow) throws Exception{
 		Connection con = DBConnector.getConnect();
 		String sql = "select * from\r\n" + 
 				"(select rownum r, p.* from\r\n" + 
-				"(select * from point where name like ? order by num desc) p)\r\n" + 
+				"(select * from point where " +kind+ " like ? order by num desc) p)\r\n" + 
 				"where r between ? and ?";
 		PreparedStatement st = con.prepareStatement(sql);
 		st.setString(1,"%"+search+"%");
@@ -46,17 +48,17 @@ public class PointDAO {
 		
 		
 		ArrayList<PointDTO> ar = new ArrayList<PointDTO>();
-		PointDTO dto = null;
+		PointDTO pointDTO = null;
 		while(rs.next()) {
-			dto = new PointDTO();
-			dto.setNum(rs.getInt("num"));
-			dto.setName(rs.getString("name"));
-			dto.setKor(rs.getInt("kor"));
-			dto.setEng(rs.getInt("eng"));
-			dto.setMath(rs.getInt("math"));
-			dto.setTotal(rs.getInt("total"));
-			dto.setAvg(rs.getDouble("avg"));
-			ar.add(dto);
+			pointDTO = new PointDTO();
+			pointDTO.setNum(rs.getInt("num"));
+			pointDTO.setName(rs.getString("name"));
+			pointDTO.setKor(rs.getInt("kor"));
+			pointDTO.setEng(rs.getInt("eng"));
+			pointDTO.setMath(rs.getInt("math"));
+			pointDTO.setTotal(rs.getInt("total"));
+			pointDTO.setAvg(rs.getDouble("avg"));
+			ar.add(pointDTO);
 		}
 		DBConnector.disConnect(con, st, rs);
 		return ar;
@@ -72,21 +74,21 @@ public class PointDAO {
 		
 		ResultSet rs = st.executeQuery();
 		
-		PointDTO dto = null;
+		PointDTO pointDTO = null;
 		if(rs.next()) {
-			dto = new PointDTO();
-			dto.setNum(rs.getInt("num"));
-			dto.setName(rs.getString("name"));
-			dto.setKor(rs.getInt("kor"));
-			dto.setEng(rs.getInt("eng"));
-			dto.setMath(rs.getInt("math"));
-			dto.setTotal(rs.getInt("total"));
-			dto.setAvg(rs.getDouble("avg"));
+			pointDTO = new PointDTO();
+			pointDTO.setNum(rs.getInt("num"));
+			pointDTO.setName(rs.getString("name"));
+			pointDTO.setKor(rs.getInt("kor"));
+			pointDTO.setEng(rs.getInt("eng"));
+			pointDTO.setMath(rs.getInt("math"));
+			pointDTO.setTotal(rs.getInt("total"));
+			pointDTO.setAvg(rs.getDouble("avg"));
 		}
 		
 		DBConnector.disConnect(con, st, rs);
 		
-		return dto;
+		return pointDTO;
 	}
 	
 	
@@ -107,18 +109,18 @@ public class PointDAO {
 	// 메서드명 update
 	// 리턴 int
 	// 매개변수 PointDTO
-	public int update(PointDTO dto) throws Exception{
+	public int update(PointDTO pointDTO) throws Exception{
 		Connection con = DBConnector.getConnect();
 		String sql = "update point set name=?, kor=?, eng=?, math=?, total=?, avg=? where num=?";
 		PreparedStatement st = con.prepareStatement(sql);
 		
-		st.setString(1, dto.getName());
-		st.setInt(2, dto.getKor());
-		st.setInt(3, dto.getEng());
-		st.setInt(4, dto.getMath());
-		st.setInt(5, dto.getTotal());
-		st.setDouble(6, dto.getAvg());
-		st.setInt(7, dto.getNum());
+		st.setString(1, pointDTO.getName());
+		st.setInt(2, pointDTO.getKor());
+		st.setInt(3, pointDTO.getEng());
+		st.setInt(4, pointDTO.getMath());
+		st.setInt(5, pointDTO.getTotal());
+		st.setDouble(6, pointDTO.getAvg());
+		st.setInt(7, pointDTO.getNum());
 		
 		int result=st.executeUpdate();
 
@@ -133,18 +135,18 @@ public class PointDAO {
 	//메서드명은 insert
 	//리턴은 int
 	//매개변수 PointDTO
-	public int insert(PointDTO dto) throws Exception {
+	public int insert(PointDTO pointDTO) throws Exception {
 		Connection con = DBConnector.getConnect();
 		String sql = "insert into point values(point_seq.nextval, ?,?,?,?,?,?)";
 		
 		PreparedStatement st = con.prepareStatement(sql);
 		
-		st.setString(1, dto.getName());
-		st.setInt(2, dto.getKor());
-		st.setInt(3, dto.getEng());
-		st.setInt(4, dto.getMath());
-		st.setInt(5, dto.getTotal());
-		st.setDouble(6, dto.getAvg());
+		st.setString(1, pointDTO.getName());
+		st.setInt(2, pointDTO.getKor());
+		st.setInt(3, pointDTO.getEng());
+		st.setInt(4, pointDTO.getMath());
+		st.setInt(5, pointDTO.getTotal());
+		st.setDouble(6, pointDTO.getAvg());
 		
 		
 		int result = st.executeUpdate();

@@ -15,26 +15,41 @@
 	
 	try{
 	curPage= Integer.parseInt(request.getParameter("curPage"));
+	if(curPage<1){
+		curPage =1;
+	}
 	} catch(Exception e) {
 		
 	}
-	
-	String kind = request.getParameter("kind");
+
 	String search = request.getParameter("search");
-	
-	System.out.println("kind : " + kind);
-	System.out.println("search : " +search);
+	System.out.println("search : "+ search);
+
 	if(search==null) {
 		search="";
 	}
 	
+	String kind = request.getParameter("kind");
+	
+	if(kind==null) {
+		kind="name";
+	} else if(kind.equals("n")){
+		kind="name";
+	} else if(kind.equals("k")) {
+		kind = "kor";
+	} else kind="name";
+	System.out.println("kind : "+ kind);
+
+	
+	
+
 	int perPage=10;
 	int startRow=(curPage-1)*perPage+1;
 	int lastRow=curPage*perPage;
 	
 	// 1. 총 글의 개수
 	
-	int totalCount= pointDAO.getTotalCount();
+	int totalCount= pointDAO.getTotalCount(kind, search);
 	// 2. 총 페이지 개수
 	int totalPage = totalCount/perPage;
 //	Math.ceil(totalCount/perPage);
@@ -67,7 +82,7 @@
 	}
 	
 	
-	ArrayList<PointDTO> ar = pointDAO.selectList(search, startRow, lastRow);
+	ArrayList<PointDTO> ar = pointDAO.selectList(kind, search, startRow, lastRow);
 			
 %>    
 <!DOCTYPE html>
@@ -118,9 +133,8 @@
   <div class="row">
   	<form action="./point.jsp">
   	<select name="kind">
-  		<option value="t">제목</option>
-  		<option value="w">작성자</option>
-  		<option value="c">내용</option>
+  		<option value="n">이름</option>
+  		<option value="k">국어점수</option>
   	</select>
   	<input type="text" name="search">
 	<button>검색</button>  
@@ -133,19 +147,19 @@
 
   	<div class="row">
   		<%if(curBlock>1) { %>
-  		<a href="./point.jsp?curPage=<%=startNum-1%>">[이전]</a>
+  		<a href="./point.jsp?curPage=<%=startNum-1%>&kind=<%=kind%>&search=<%=search %>">[이전]</a>
   		
   		<% }%>
   		
   	
   		
   		<% for(int i=startNum; i<=lastNum;i++) {%>
-  			<a href="./point.jsp?curPage=<%=i%>"><%= i %></a>
+  			<a href="./point.jsp?curPage=<%=i%>&kind=<%=kind%>&search=<%=search %>"><%= i %></a>
   		<%} %>
   	
   		
   		<%if(curBlock<totalBlock) { %>
-  		<a href="./point.jsp?curPage=<%=lastNum+1%>">[다음]</a>
+  		<a href="./point.jsp?curPage=<%=lastNum+1%>&kind=<%=kind%>&search=<%=search %>">[다음]</a>
   		
   		<% }%>
   		

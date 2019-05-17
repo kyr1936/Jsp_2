@@ -1,3 +1,4 @@
+<%@page import="com.yr.member.MemberDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
   <!-- Navigation -->
@@ -10,26 +11,28 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="<%=application.getContextPath()%>/point/point.jsp">Point</a>
+         <a class="nav-link" href="<%=application.getContextPath()%>/point/point.jsp">Point</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="services.html">Services</a>
+            <a class="nav-link" href="<%=application.getContextPath()%>/notice/noticeList.jsp">Notice</a>
+          </li>
+          <% MemberDTO memberDTO =(MemberDTO)session.getAttribute("member"); %>
+          <% if(memberDTO != null){ %>
+           <li class="nav-item">
+            <a class="nav-link" href="<%=application.getContextPath()%>/member/memberMyPage.jsp">MyPage</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="contact.html">Contact</a>
+            <a class="nav-link" href="<%=application.getContextPath()%>/member/memberLogout.jsp">Logout</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Portfolio
-            </a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio">
-              <a class="dropdown-item" href="portfolio-1-col.html">1 Column Portfolio</a>
-              <a class="dropdown-item" href="portfolio-2-col.html">2 Column Portfolio</a>
-              <a class="dropdown-item" href="portfolio-3-col.html">3 Column Portfolio</a>
-              <a class="dropdown-item" href="portfolio-4-col.html">4 Column Portfolio</a>
-              <a class="dropdown-item" href="portfolio-item.html">Single Portfolio Item</a>
-            </div>
+          <%}else { %>
+          <li class="nav-item">
+            <a class="nav-link" href="<%=application.getContextPath()%>/member/memberCheck.jsp">Join</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<%=application.getContextPath()%>/member/memberLogin.jsp">Login</a>
+          </li>
+          <%} %>
+          
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Blog
