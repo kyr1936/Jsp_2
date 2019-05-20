@@ -24,7 +24,8 @@
     </div>
     <div class="form-group">
       <label for="writer">Writer:</label>
-      <input type="text" class="form-control" id="Writer" placeholder="Enter Writer" name="Writer">
+      <input type="text" class="form-control" id="Writer" readonly="readonly"  value="<%=memberDTO.getId() %>" name="Writer">
+      
     </div>
     <div class="form-group">
       <label for="contents">Contents:</label>

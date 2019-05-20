@@ -26,7 +26,7 @@
 <title>Insert title here</title>
 <script type="text/javascript">
 	alert('<%=msg%>');
-	location.href="./point.jsp";
+	location.href="./noticeList.jsp";
 </script>
 </head>
 <body>

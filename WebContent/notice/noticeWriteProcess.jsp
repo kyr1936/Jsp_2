@@ -30,6 +30,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<jsp:include page="../temp/css_meta.jsp" />
 
 <script type="text/javascript">
 	alert('<%= msg%>');
@@ -38,6 +39,8 @@
 </script>
 </head>
 <body>
+<jsp:include page="../temp/header_nav.jsp" />
 
+<jsp:include page="../temp/footer.jsp" />
 </body>
 </html>

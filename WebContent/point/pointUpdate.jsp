@@ -22,6 +22,7 @@
 <body>
 	<div class="container">
 	<div class="row">
+	
 	<form action="./pointUpdateProcess.jsp" >
 	<input type="hidden" name="num" value="<%=num%>">
     <div class="form-group">

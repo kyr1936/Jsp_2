@@ -11,16 +11,33 @@
     
 <%
 	MemberDAO dao = new MemberDAO();
+	//체크박스 체크여부
+	String check = request.getParameter("remember");
+	System.out.println(check);
+	
+	
+	//쿠키 생성
+	
+	if(check!=null) {
+		Cookie cookie = new Cookie("check", memberDTO.getId()); 
+		cookie.setMaxAge(60*60*24*7);
+		response.addCookie(cookie);
+
+	} else {
+		Cookie c = new Cookie("check", "");
+		response.addCookie(c);
+	}
+
 	memberDTO = dao.memberLogin(memberDTO);
 	
-	String msg = "Login Fail";
+
 	
 	if(memberDTO!=null) {
 		session.setAttribute("member", memberDTO);
 		response.sendRedirect("../index.jsp");
 	
 	} else {
-		request.setAttribute("message", msg);
+		request.setAttribute("message", "Login Fail");
 		request.setAttribute("path", "./memberLogin.jsp");
 		RequestDispatcher view = request.getRequestDispatcher("../common/test/result.jsp");
 		view.forward(request, response);

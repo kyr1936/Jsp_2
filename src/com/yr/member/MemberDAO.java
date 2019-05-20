@@ -3,10 +3,59 @@ package com.yr.member;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import com.yr.util.DBConnector;
 
 public class MemberDAO {
+
+	public int idCheck(String id) throws Exception {
+		int result=0; //0이면 사용가능한 id, 1이면 이미 사용 중
+		
+		Connection con = DBConnector.getConnect();
+		String sql = "select id from member where id=?";
+		PreparedStatement st = con.prepareStatement(sql);
+		st.setString(1, id);
+		ResultSet rs = st.executeQuery();
+		
+		if(rs.next()) {
+			result=1;
+		}
+		DBConnector.disConnect(con, st, rs);
+		return result;
+	}
+	
+	public int memberDelete(String id) throws Exception {
+		Connection con = DBConnector.getConnect();
+		String sql = "delete from member where id=?";
+		PreparedStatement st = con.prepareStatement(sql);
+		
+		st.setString(1, id);
+		
+		int result = st.executeUpdate();
+		DBConnector.disConnect(con, st);
+		return result;
+		
+	}
+	public int update(MemberDTO memberDTO) throws Exception {
+		Connection con = DBConnector.getConnect();
+		String sql = "update member set pw=?, name=?, phone=?, email=?, age=? where id=?";
+		PreparedStatement st = con.prepareStatement(sql);
+		
+		st.setString(1, memberDTO.getPw());
+		st.setString(2, memberDTO.getName());
+		st.setString(3, memberDTO.getPhone());
+		st.setString(4, memberDTO.getEmail());
+		st.setInt(5, memberDTO.getAge());
+		st.setString(6, memberDTO.getId());
+		
+		int result = st.executeUpdate();
+		
+		DBConnector.disConnect(con, st);
+		return result;
+	
+	}
+	
 	public int memberJoin(MemberDTO dto) throws Exception{
 		Connection con = DBConnector.getConnect();
 		String sql = "insert into member values(?,?,?,?,?,?)";

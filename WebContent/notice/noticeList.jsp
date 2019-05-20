@@ -108,11 +108,16 @@
 	  		
 	  		<%} %>
 	  	</div>
-	  	
+	<%
+		//MemberDTO mDTO = (MemberDTO)session.getAttribute("member");
+	
+		if(memberDTO!=null && memberDTO.getId().equals("admin")) {
+	
+	%>  	
   	<div class="row">
   		<a href="./noticeWrite.jsp" class="btn btn-primary">Write</a>
   	</div>
-  
+  <%} %>
   </div>			
 				
 				

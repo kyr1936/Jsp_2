@@ -1,3 +1,4 @@
+<%@page import="com.yr.member.MemberDTO"%>
 <%@page import="com.yr.notice.NoticeDTO"%>
 <%@page import="com.yr.notice.NoticeDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -16,10 +17,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
+<%@ include file="../temp/css_meta.jsp" %>
 </head>
 <body>
-
+<%@ include file="../temp/header_nav.jsp" %>
   	<div class="row">
 		<table class="table table-hover">
 			<tr>
@@ -33,9 +34,12 @@
 			</tr>	
 		</table>
 		</div>
+	<% if(memberDTO != null && memberDTO.getId().equals("admin")) {%>
 	<div class="row">
 			<a href="./noticeUpdate.jsp?num=<%= dto.getNum()%>">Update</a>
 			<a href="./noticeDelete.jsp?num=<%= dto.getNum()%>">Delete</a>
 	</div>
+	<%} %>
+<%@ include file="../temp/footer.jsp" %>	
 </body>
 </html>

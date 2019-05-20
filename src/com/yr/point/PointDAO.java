@@ -27,9 +27,6 @@ public class PointDAO {
 		DBConnector.disConnect(con, st, rs);
 		return result;
 	}
-	
-	
-	
 	//메서드명 selectList, 매개변수 없음, 리턴 arrayList
 	public ArrayList<PointDTO> selectList(String kind, String search, int startRow, int lastRow) throws Exception{
 		Connection con = DBConnector.getConnect();
@@ -125,12 +122,8 @@ public class PointDAO {
 		int result=st.executeUpdate();
 
 		DBConnector.disConnect(con, st);
-		return result;
-		
+		return result;	
 	}
-	
-	
-	
 	
 	//메서드명은 insert
 	//리턴은 int
